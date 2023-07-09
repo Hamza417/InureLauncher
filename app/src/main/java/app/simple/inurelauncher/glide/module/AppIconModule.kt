@@ -1,0 +1,50 @@
+package app.simple.inurelauncher.glide.module
+
+import android.annotation.SuppressLint
+import android.content.Context
+import android.graphics.Bitmap
+import app.simple.inurelauncher.glide.icon.AppIcon
+import app.simple.inurelauncher.glide.icon.AppIconLoader
+import app.simple.inurelauncher.R
+import com.bumptech.glide.Glide
+import com.bumptech.glide.GlideBuilder
+import com.bumptech.glide.Registry
+import com.bumptech.glide.annotation.GlideModule
+import com.bumptech.glide.load.DecodeFormat
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions
+import com.bumptech.glide.module.AppGlideModule
+import com.bumptech.glide.request.RequestOptions
+
+@GlideModule
+class AppIconModule : AppGlideModule() {
+    override fun isManifestParsingEnabled(): Boolean {
+        return false
+    }
+
+    @SuppressLint("CheckResult")
+    override fun applyOptions(context: Context, builder: GlideBuilder) {
+        builder.setDefaultTransitionOptions(Bitmap::class.java, BitmapTransitionOptions.withCrossFade())
+
+        val requestOptions = RequestOptions()
+
+        requestOptions.format(DecodeFormat.PREFER_ARGB_8888)
+
+        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE)
+
+        requestOptions.fallback(R.mipmap.ic_launcher)
+        requestOptions.error(R.mipmap.ic_launcher)
+
+        //        requestOptions.transform(
+        //                Padding(BlurShadow.MAX_BLUR_RADIUS.toInt()),
+        //                BlurShadow(context)
+        //                    .setElevation(25F)
+        //                    .setBlurRadius(BlurShadow.MAX_BLUR_RADIUS))
+
+        builder.setDefaultRequestOptions(requestOptions)
+    }
+
+    override fun registerComponents(context: Context, glide: Glide, registry: Registry) {
+        registry.append(AppIcon::class.java, Bitmap::class.java, AppIconLoader.Factory())
+    }
+}
