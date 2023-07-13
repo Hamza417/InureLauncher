@@ -11,9 +11,13 @@ import com.bumptech.glide.load.data.DataFetcher
 class AppIconFetcher internal constructor(private val appIcon: AppIcon) : DataFetcher<Bitmap> {
 
     override fun loadData(priority: Priority, callback: DataFetcher.DataCallback<in Bitmap>) {
-        val launcher = appIcon.context.getSystemService(Context.LAUNCHER_APPS_SERVICE) as LauncherApps
-        val activityList = launcher.getActivityList(appIcon.packageName, android.os.Process.myUserHandle())[0]
-        callback.onDataReady(activityList.getIcon(0).toBitmap(150, 150))
+        try {
+            val launcher = appIcon.context.getSystemService(Context.LAUNCHER_APPS_SERVICE) as LauncherApps
+            val activityList = launcher.getActivityList(appIcon.packageName, android.os.Process.myUserHandle())[0]
+            callback.onDataReady(activityList.getIcon(0).toBitmap(150, 150))
+        } catch (e: IndexOutOfBoundsException) {
+            callback.onLoadFailed(e)
+        }
     }
 
     override fun cleanup() {
