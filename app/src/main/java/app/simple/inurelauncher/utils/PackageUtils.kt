@@ -10,7 +10,6 @@ object PackageUtils {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             getInstalledApplications(PackageManager.ApplicationInfoFlags.of(flags.toLong()))
         } else {
-            @Suppress("DEPRECATION")
             getInstalledApplications(flags)
         }
     }
