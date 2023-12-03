@@ -5,6 +5,8 @@ import android.content.pm.ApplicationInfo
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import app.simple.inurelauncher.utils.PackageUtils.getInstalledApps
+import app.simple.inurelauncher.utils.PackageUtils.getLaunchableApps
+import app.simple.inurelauncher.utils.PackageUtils.loadApplicationName
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,7 +22,12 @@ class AppLoaderViewModel(application: Application) : AndroidViewModel(applicatio
 
     private fun loadApps() {
         viewModelScope.launch(Dispatchers.IO) {
-            val apps = getApplication<Application>().packageManager.getInstalledApps()
+            val apps = getApplication<Application>().packageManager.getLaunchableApps()
+
+            apps.forEach {
+                it.name = it.loadApplicationName(getApplication())
+            }
+
             appsFlow.emit(apps)
         }
     }

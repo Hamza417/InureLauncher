@@ -1,8 +1,8 @@
 package app.simple.inurelauncher.utils
 
+import android.app.Application
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
-import android.content.pm.PackageManager.PackageInfoFlags
 import android.os.Build
 
 object PackageUtils {
@@ -18,6 +18,14 @@ object PackageUtils {
     fun PackageManager.getLaunchableApps(flags: Int = PackageManager.GET_META_DATA): List<ApplicationInfo> {
         return getInstalledApps(flags).filter { app ->
             getLaunchIntentForPackage(app.packageName) != null
+        }
+    }
+
+    fun ApplicationInfo.loadApplicationName(application: Application): String {
+        return try {
+            loadLabel(application.packageManager).toString()
+        } catch (e: NullPointerException) {
+            packageName
         }
     }
 }
