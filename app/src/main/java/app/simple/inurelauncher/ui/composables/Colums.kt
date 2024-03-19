@@ -24,7 +24,7 @@ fun Apps(context: Context, apps: List<ApplicationInfo>) {
     LazyVerticalGrid(columns = GridCells.Adaptive(minSize = 100.dp),
                      modifier = Modifier
                          .fillMaxHeight()
-                         .padding(horizontal = 16.dp)) {
+                         .padding(horizontal = 8.dp)) {
         items(apps.size) { index ->
             Column(
                     modifier = Modifier.padding(8.dp),
@@ -35,16 +35,17 @@ fun Apps(context: Context, apps: List<ApplicationInfo>) {
                         contentDescription = "",
                         modifier = Modifier
                             .padding(8.dp)
-                            .height(64.dp)
-                            .width(64.dp)
+                            .height(72.dp)
+                            .width(72.dp)
                 )
                 Text(
                         text = apps[index].name,
-                        maxLines = 2,
+                        maxLines = 1,
                         textAlign = androidx.compose.ui.text.style.TextAlign.Center,
                         overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
-                        fontSize = 12.sp,
-                        modifier = Modifier.width(64.dp)
+                        fontSize = 14.sp,
+                        modifier = Modifier.width(64.dp),
+                        color = androidx.compose.ui.graphics.Color.Black
                 )
             }
         }

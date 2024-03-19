@@ -28,7 +28,7 @@ class AppLoaderViewModel(application: Application) : AndroidViewModel(applicatio
                 it.name = it.loadApplicationName(getApplication())
             }
 
-            appsFlow.emit(apps)
+            appsFlow.emit(apps.sortedBy { it.name })
         }
     }
 }
