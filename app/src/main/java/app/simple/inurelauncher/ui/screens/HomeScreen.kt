@@ -7,19 +7,20 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Card
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import app.simple.inurelauncher.R
@@ -35,16 +36,19 @@ fun HomeScreen(context: Context, navController: NavController? = null) {
     ) {
         Card(
                 modifier = Modifier
-                    .padding(24.dp)
+                    .padding(0.dp)
                     .wrapContentHeight(align = androidx.compose.ui.Alignment.Bottom),
         ) {
             // Dock
             Row(
-                    verticalAlignment = androidx.compose.ui.Alignment.CenterVertically,
+                    modifier = Modifier
+                        .padding(8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceEvenly,
             ) {
                 DockItem(context = context, packageName = "app.simple.inure", modifier = Modifier.weight(1f))
                 DockItem(context = context, packageName = "app.simple.peri", modifier = Modifier.weight(1f))
+                DockItem(context = context, packageName = "app.simple.positional", modifier = Modifier.weight(1f))
                 DockItem(context = context, packageName = "app.simple.positional", modifier = Modifier.weight(1f))
                 AppDrawerButton(modifier = Modifier
                     .weight(1F)
@@ -61,8 +65,9 @@ fun HomeScreen(context: Context, navController: NavController? = null) {
 fun DockItem(context: Context, packageName: String, modifier: Modifier = Modifier) {
     // Dock item
     Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceEvenly,
             modifier = modifier
-                .padding(8.dp)
                 .clickable {
                     val applicationInfo = context.packageManager.getApplicationInfo(packageName, 0)
                     context.packageManager
@@ -70,14 +75,15 @@ fun DockItem(context: Context, packageName: String, modifier: Modifier = Modifie
                         ?.let {
                             context.startActivity(it)
                         }
-                },
+                }
+                .padding(8.dp),
     ) {
         GlideImage(
                 model = AppIcon(context, packageName),
                 contentDescription = "",
                 modifier = Modifier
-                    .height(64.dp)
-                    .width(64.dp),
+                    .size(64.dp)
+                    .align(Alignment.CenterHorizontally),
                 alignment = Alignment.Center
         )
     }
