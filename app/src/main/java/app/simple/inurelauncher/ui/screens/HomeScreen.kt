@@ -6,14 +6,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.material3.Card
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
@@ -36,29 +32,23 @@ fun HomeScreen(context: Context, navController: NavController? = null) {
             modifier = Modifier.fillMaxSize(),
             color = androidx.compose.ui.graphics.Color.Transparent
     ) {
-        Card(
+        // Dock
+        Row(
                 modifier = Modifier
-                    .padding(0.dp)
-                    .wrapContentHeight(align = androidx.compose.ui.Alignment.Bottom),
+                    .padding(16.dp),
+                verticalAlignment = Alignment.Bottom,
+                horizontalArrangement = Arrangement.SpaceEvenly,
         ) {
-            // Dock
-            Row(
-                    modifier = Modifier
-                        .padding(8.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-            ) {
-                DockItem(context = context, packageName = "app.simple.inure", modifier = Modifier.weight(1f))
-                DockItem(context = context, packageName = "app.simple.peri", modifier = Modifier.weight(1f))
-                DockItem(context = context, packageName = "app.simple.positional", modifier = Modifier.weight(1f))
-                DockItem(context = context, packageName = "app.simple.positional", modifier = Modifier.weight(1f))
-                VerticalDivider(Modifier.height(64.dp))
-                AppDrawerButton(modifier = Modifier
-                    .weight(1F)
-                    .clickable {
-                        navController?.navigate(Routes.APP_DRAWER)
-                    })
-            }
+            DockItem(context = context, packageName = "app.simple.inure", modifier = Modifier.weight(1f))
+            DockItem(context = context, packageName = "app.simple.peri", modifier = Modifier.weight(1f))
+            DockItem(context = context, packageName = "app.simple.positional", modifier = Modifier.weight(1f))
+            DockItem(context = context, packageName = "app.simple.felicity.dev", modifier = Modifier.weight(1f))
+            VerticalDivider(Modifier.height(64.dp))
+            AppDrawerButton(modifier = Modifier
+                .weight(1F)
+                .clickable {
+                    navController?.navigate(Routes.APP_DRAWER)
+                })
         }
     }
 }
@@ -97,15 +87,11 @@ fun AppDrawerButton(modifier: Modifier = Modifier) {
     Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceEvenly,
-            modifier = modifier
-                .clickable {
-
-                }
-                .padding(8.dp),
+            modifier = modifier.padding(8.dp),
     ) {
         Image(imageVector = ImageVector.vectorResource(id = R.drawable.ic_drawer),
-             contentDescription = "Apps",
-             modifier = Modifier.size(64.dp))
+              contentDescription = "Apps",
+              modifier = Modifier.size(64.dp))
     }
 }
 
