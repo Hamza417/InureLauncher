@@ -2,6 +2,7 @@ package app.simple.inurelauncher.ui.composables
 
 import android.content.Context
 import android.content.pm.ApplicationInfo
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
@@ -15,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import app.simple.inurelauncher.glide.icon.AppIcon
+import app.simple.inurelauncher.utils.PackageUtils.launchApp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 
@@ -27,9 +29,14 @@ fun Apps(context: Context, apps: List<ApplicationInfo>) {
                          .padding(horizontal = 8.dp)) {
         items(apps.size) { index ->
             Column(
-                    modifier = Modifier.padding(8.dp),
+                    modifier = Modifier
+                        .padding(12.dp)
+                        .clickable {
+                                   apps[index].launchApp(context.packageManager, context)
+                        },
                     horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally,
-            ) {
+
+                    ) {
                 GlideImage(
                         model = AppIcon(context = context, packageName = apps[index].packageName),
                         contentDescription = "",

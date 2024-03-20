@@ -1,6 +1,8 @@
 package app.simple.inurelauncher.utils
 
 import android.app.Application
+import android.content.Context
+import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.os.Build
@@ -25,6 +27,13 @@ object PackageUtils {
             loadLabel(application.packageManager).toString()
         } catch (e: NullPointerException) {
             packageName
+        }
+    }
+
+    fun ApplicationInfo.launchApp(packageManager: PackageManager, context: Context) {
+        packageManager.getLaunchIntentForPackage(packageName)?.let {
+            it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startActivity(it)
         }
     }
 }
