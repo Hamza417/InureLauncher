@@ -1,4 +1,4 @@
-package app.simple.inurelauncher.ui.composables
+package app.simple.inurelauncher.ui.screens
 
 import android.content.Context
 import android.content.pm.ApplicationInfo
@@ -12,7 +12,11 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import app.simple.inurelauncher.glide.icon.AppIcon
@@ -20,9 +24,14 @@ import app.simple.inurelauncher.utils.PackageUtils.launchApp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 
+@Composable
+fun AppDrawer() {
+
+}
+
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun Apps(context: Context, apps: List<ApplicationInfo>) {
+fun AppDrawer(context: Context, apps: List<ApplicationInfo>, navController: androidx.navigation.NavController? = null) {
     LazyVerticalGrid(columns = GridCells.Adaptive(minSize = 100.dp),
                      modifier = Modifier
                          .fillMaxHeight()
@@ -32,9 +41,9 @@ fun Apps(context: Context, apps: List<ApplicationInfo>) {
                     modifier = Modifier
                         .padding(12.dp)
                         .clickable {
-                                   apps[index].launchApp(context.packageManager, context)
+                            apps[index].launchApp(context.packageManager, context)
                         },
-                    horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally,
+                    horizontalAlignment = Alignment.CenterHorizontally,
 
                     ) {
                 GlideImage(
@@ -48,11 +57,11 @@ fun Apps(context: Context, apps: List<ApplicationInfo>) {
                 Text(
                         text = apps[index].name,
                         maxLines = 1,
-                        textAlign = androidx.compose.ui.text.style.TextAlign.Center,
-                        overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
+                        textAlign = TextAlign.Center,
+                        overflow = TextOverflow.Ellipsis,
                         fontSize = 14.sp,
                         modifier = Modifier.width(64.dp),
-                        color = androidx.compose.ui.graphics.Color.Black
+                        color = Color.Black
                 )
             }
         }

@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.pm.ApplicationInfo
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import app.simple.inurelauncher.utils.PackageUtils.getInstalledApps
 import app.simple.inurelauncher.utils.PackageUtils.getLaunchableApps
 import app.simple.inurelauncher.utils.PackageUtils.loadApplicationName
 import kotlinx.coroutines.Dispatchers
