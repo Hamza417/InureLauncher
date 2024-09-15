@@ -1,7 +1,9 @@
 package app.simple.inurelauncher.ui.theme
 
 import android.app.Activity
+import android.graphics.Color
 import android.os.Build
+import android.view.Window
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
@@ -57,8 +59,9 @@ fun InureLauncherTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
+            window.statusBarColor = Color.TRANSPARENT
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+            makeAppFullScreen(window)
         }
     }
 
@@ -67,4 +70,20 @@ fun InureLauncherTheme(
             typography = Typography,
             content = content
     )
+}
+
+private fun makeAppFullScreen(window: Window) {
+    WindowCompat.setDecorFitsSystemWindows(window, false)
+    window.statusBarColor = Color.TRANSPARENT
+    window.navigationBarColor = Color.TRANSPARENT
+
+    // Disable navigation bar contrast
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        window.isNavigationBarContrastEnforced = false
+        window.isStatusBarContrastEnforced = false
+    }
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+        window.navigationBarDividerColor = Color.TRANSPARENT
+    }
 }
