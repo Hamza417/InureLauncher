@@ -30,7 +30,7 @@ class AppIconModule : AppGlideModule() {
 
         requestOptions.format(DecodeFormat.PREFER_ARGB_8888)
 
-        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE)
+        requestOptions.diskCacheStrategy(DiskCacheStrategy.ALL)
 
         requestOptions.fallback(R.mipmap.ic_launcher)
         requestOptions.error(R.mipmap.ic_launcher)

@@ -2,16 +2,20 @@ package app.simple.inurelauncher.ui.screens
 
 import android.content.Context
 import android.content.pm.ApplicationInfo
+import android.view.RoundedCorner
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.BlurredEdgeTreatment
 import androidx.compose.ui.draw.blur
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
@@ -62,28 +67,26 @@ fun AppDrawer(context: Context, apps: List<ApplicationInfo>, navController: andr
     LazyVerticalGrid(columns = GridCells.Adaptive(minSize = 100.dp),
                      modifier = Modifier
                          .fillMaxHeight()
-                         .padding(horizontal = 8.dp)
                          .graphicsLayer {
-                                clip = false
+                             clip = false
                          },
                      contentPadding = PaddingValues(
                              top = topPadding,
-                             start = 8.dp,
-                             end = 8.dp,
+                             start = 16.dp,
+                             end = 16.dp,
                              bottom = bottomPadding)) {
         items(apps.size) { index ->
-            Column(
+            Card(
                     modifier = Modifier
-                        .padding(12.dp)
-                        .graphicsLayer {
-                            clip = false
-                        }
-                        .clickable {
-                            apps[index].launchApp(context.packageManager, context)
-                        },
-                    horizontalAlignment = Alignment.CenterHorizontally,
+                        .padding(8.dp),
+                    colors = CardDefaults.cardColors(
+                            containerColor = Color.Transparent,
+                    ),
+                    shape = RoundedCornerShape(16.dp),
+                    onClick = {
 
-                    ) {
+                    }
+            ) {
                 Box(
                         modifier = Modifier
                             .graphicsLayer {
@@ -99,9 +102,6 @@ fun AppDrawer(context: Context, apps: List<ApplicationInfo>, navController: andr
                                 .height(72.dp)
                                 .width(72.dp)
                                 .blur(4.dp, edgeTreatment = BlurredEdgeTreatment.Unbounded)
-                                .graphicsLayer {
-                                    clip = false
-                                }
                     )
                     GlideImage(
                             model = AppIcon(context = context, packageName = apps[index].packageName),
@@ -118,7 +118,7 @@ fun AppDrawer(context: Context, apps: List<ApplicationInfo>, navController: andr
                         textAlign = TextAlign.Center,
                         overflow = TextOverflow.Ellipsis,
                         fontSize = 14.sp,
-                        modifier = Modifier.width(64.dp),
+                        modifier = Modifier.fillMaxWidth().padding(8.dp),
                         color = MaterialTheme.colorScheme.surface
                 )
             }
