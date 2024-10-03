@@ -1,7 +1,7 @@
 package app.simple.inurelauncher.ui.screens
 
 import android.content.pm.ApplicationInfo
-import android.content.pm.PackageInfo
+import androidx.compose.MutableState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
@@ -13,11 +13,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.getValue
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.mutableStateOf
 import androidx.compose.runtime.Composable
@@ -26,18 +28,23 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.BlurredEdgeTreatment
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.blur
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowInsetsCompat
@@ -57,7 +64,6 @@ fun AppDrawer(navController: NavController? = null) {
     val appsViewModel: AppLoaderViewModel = viewModel()
     var statusBarHeight by remember { mutableIntStateOf(0) }
     var navigationBarHeight by remember { mutableIntStateOf(0) }
-    var showAppMenu: ApplicationInfo? by remember { mutableStateOf(null) }
 
     appsViewModel.getApps().observeAsState().value?.let {
         apps = it
@@ -75,14 +81,66 @@ fun AppDrawer(navController: NavController? = null) {
     val topPadding = 8.dp + statusBarHeightDp
     val bottomPadding = 8.dp + navigationBarHeightDp
 
-    LazyVerticalGrid(columns = GridCells.Fixed(4),
-                     modifier = Modifier
-                         .fillMaxSize(),
-                     contentPadding = PaddingValues(
-                             top = topPadding,
-                             start = 16.dp,
-                             end = 16.dp,
-                             bottom = bottomPadding)) {
+    val lazyGridState = rememberLazyGridState()
+
+    val threshold = 200f // Define the threshold value
+
+    val nestedScrollConnection = remember {
+        object : NestedScrollConnection {
+            private var totalOffsetY = 0f
+
+            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                if (lazyGridState.firstVisibleItemIndex == 0 && lazyGridState.firstVisibleItemScrollOffset == 0) {
+                    totalOffsetY += available.y
+                    if (totalOffsetY > 0) {
+                        // Adjust the transparency or position of the previous screen based on totalOffsetY
+                        // For example, you can use a Composable with a Modifier.alpha() to change the transparency
+                        // of the previous screen based on totalOffsetY
+                        val alpha = 1f - (totalOffsetY / threshold).coerceIn(0f, 1f)
+                        Modifier.alpha(alpha)
+                    }
+                    if (totalOffsetY > threshold) { // Use the defined threshold for navigation
+                        navController?.popBackStack()
+                    }
+                }
+                return Offset.Zero
+            }
+
+            override suspend fun onPreFling(available: Velocity): Velocity {
+                if (lazyGridState.firstVisibleItemIndex == 0 && lazyGridState.firstVisibleItemScrollOffset == 0) {
+                    if (available.y > 0) {
+                        navController?.popBackStack()
+                    }
+                }
+                return super.onPreFling(available)
+            }
+
+            override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset {
+                return super.onPostScroll(consumed, available, source)
+            }
+        }
+    }
+
+    Surface(
+            color = MaterialTheme.colorScheme.background,
+            modifier = Modifier.fillMaxSize()
+    ) {
+
+    }
+
+    LazyVerticalGrid(
+            columns = GridCells.Fixed(4),
+            state = lazyGridState,
+            modifier = Modifier
+                .fillMaxSize()
+                .nestedScroll(nestedScrollConnection),
+            contentPadding = PaddingValues(
+                    top = topPadding,
+                    start = 16.dp,
+                    end = 16.dp,
+                    bottom = bottomPadding
+            )
+    ) {
         items(apps.size) { index ->
             Card(
                     modifier = Modifier
@@ -92,7 +150,7 @@ fun AppDrawer(navController: NavController? = null) {
                                     apps[index].launchApp(context.packageManager, context)
                                 },
                                 onLongClick = {
-                                    showAppMenu = apps[index]
+
                                 }
                         ),
                     colors = CardDefaults.cardColors(
@@ -121,7 +179,6 @@ fun AppDrawer(navController: NavController? = null) {
                                 .height(72.dp)
                                 .width(72.dp)
                     )
-
                 }
                 Text(
                         text = apps[index].name,
