@@ -2,6 +2,7 @@ package app.simple.inurelauncher.ui.components
 
 import android.graphics.Paint
 import android.graphics.Rect
+import android.graphics.Typeface
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.size
@@ -24,7 +25,10 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
+import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
@@ -70,8 +74,10 @@ fun AnalogClockComposable(
         }
     }
 
-    BoxWithConstraints() {
+    val currentDate = remember { LocalDateTime.now() }
+    val timeFormatter = DateTimeFormatter.ofPattern("d MMM, H:mm a")
 
+    BoxWithConstraints {
         //This is the estate we are going to work with
         val width = if (minWidth < 1.dp) minSize else minWidth
         val height = if (minHeight < 1.dp) minSize else minHeight
@@ -171,6 +177,24 @@ fun AnalogClockComposable(
                     strokeWidth = radius * .03f,
                     cap = StrokeCap.Round
             )
+
+            // Draw a digital clock
+            drawContext.canvas.nativeCanvas.apply {
+                val text = timeFormatter.format(currentDate)
+                val paint = Paint()
+                paint.textSize = radius * .10f
+                paint.color = android.graphics.Color.BLACK
+
+                val textRect = Rect()
+                paint.getTextBounds(text, 0, text.length, textRect)
+
+                drawText(
+                        text,
+                        size.center.x - (textRect.width() / 2),
+                        size.center.y + (textRect.width() / 1.5F),
+                        paint
+                )
+            }
 
             // seconds hand
             drawLine(

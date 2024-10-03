@@ -57,7 +57,7 @@ fun AppDrawer(navController: NavController? = null) {
     val appsViewModel: AppLoaderViewModel = viewModel()
     var statusBarHeight by remember { mutableIntStateOf(0) }
     var navigationBarHeight by remember { mutableIntStateOf(0) }
-    var showAppMenu: PackageInfo? by remember { mutableStateOf(null) }
+    var showAppMenu: ApplicationInfo? by remember { mutableStateOf(null) }
 
     appsViewModel.getApps().observeAsState().value?.let {
         apps = it
@@ -92,8 +92,7 @@ fun AppDrawer(navController: NavController? = null) {
                                     apps[index].launchApp(context.packageManager, context)
                                 },
                                 onLongClick = {
-                                    showAppMenu = context.packageManager
-                                        .getPackageInfo(apps[index].packageName, 0)
+                                    showAppMenu = apps[index]
                                 }
                         ),
                     colors = CardDefaults.cardColors(
