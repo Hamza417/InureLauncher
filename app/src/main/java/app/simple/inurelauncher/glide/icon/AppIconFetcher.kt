@@ -14,9 +14,7 @@ class AppIconFetcher internal constructor(private val appIcon: AppIcon) : DataFe
         try {
             val launcher = appIcon.context.getSystemService(Context.LAUNCHER_APPS_SERVICE) as LauncherApps
             val activityList = launcher.getActivityList(appIcon.packageName, android.os.Process.myUserHandle())[0]
-            val displayMetrics = appIcon.context.resources.displayMetrics
-
-            callback.onDataReady(activityList.getIcon(displayMetrics.densityDpi).toBitmap(150, 150))
+            callback.onDataReady(activityList.getIcon(0).toBitmap())
         } catch (e: IndexOutOfBoundsException) {
             callback.onLoadFailed(e)
         }

@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.GridView
@@ -30,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import app.simple.inurelauncher.glide.icon.AppIcon
 import app.simple.inurelauncher.ui.components.AnalogClockComposable
+import app.simple.inurelauncher.ui.navigation.Routes
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 
@@ -58,7 +58,7 @@ fun HomeScreen(navController: NavController? = null) {
                         .padding(24.dp)
             )
         }
-        Spacer(modifier = Modifier.size(24.dp).weight(0.4F))
+        Spacer(modifier = Modifier.size(24.dp).weight(0.4f))
         Row(
                 modifier = Modifier
                     .padding(24.dp),

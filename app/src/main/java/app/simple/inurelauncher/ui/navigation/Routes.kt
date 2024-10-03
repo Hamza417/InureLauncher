@@ -1,4 +1,4 @@
-package app.simple.inurelauncher.ui.screens
+package app.simple.inurelauncher.ui.navigation
 
 object Routes {
 

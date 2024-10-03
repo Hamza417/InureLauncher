@@ -75,7 +75,7 @@ fun AppDrawer(navController: NavController? = null) {
     val topPadding = 8.dp + statusBarHeightDp
     val bottomPadding = 8.dp + navigationBarHeightDp
 
-    LazyVerticalGrid(columns = GridCells.Adaptive(minSize = 100.dp),
+    LazyVerticalGrid(columns = GridCells.Fixed(4),
                      modifier = Modifier
                          .fillMaxSize(),
                      contentPadding = PaddingValues(

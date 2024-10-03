@@ -9,7 +9,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import app.simple.inurelauncher.ui.screens.LauncherNavigation
+import app.simple.inurelauncher.ui.navigation.LauncherNavigation
 import app.simple.inurelauncher.ui.theme.InureLauncherTheme
 
 class MainActivity : ComponentActivity() {
